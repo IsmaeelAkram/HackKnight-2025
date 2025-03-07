@@ -1,5 +1,5 @@
-import os
 import json
+import os
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
@@ -28,7 +28,7 @@ def market_research():
 
     print("Idea: ", idea)
 
-    prompt = f'''These are all your qualifications, 
+    prompt = f"""These are all your qualifications, 
     You are a Market Research Analyst. 
     Your task is to tell me the estimated market size for my {idea} in my target market. Using available data, 
     make reasonable assumptions about the total addressable market (TAM), serviceable available market (SAM), and 
@@ -59,6 +59,11 @@ def market_research():
             "SAM": "3B",
             "SOM": "500M",
         }},
+        "MarketSizeGrowingYOYPercent": {{
+            "TAM": 20,
+            "SAM": 12,
+            "SOM": 5,
+        }}
         "CustomerSegments": [
             {{"Name": "Small businesses", "Percent": 42}},
             {{"Name": "Enterprise", "Percent": 28}},
@@ -113,7 +118,7 @@ def market_research():
         }}
     }}
 {idea}
-'''
+"""
 
     messages = [
         {
@@ -218,6 +223,11 @@ def outreach():
         return jsonify(json_out), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+@app.route("/budgeting")
+def budgeting():
+    return jsonify({"error": "Not implemented yet"}), 500
 
 
 if __name__ == "__main__":

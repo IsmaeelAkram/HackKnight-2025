@@ -47,6 +47,8 @@ interface BudgetingTabProps {
 }
 
 export function BudgetingTab({ startupIdea }: BudgetingTabProps) {
+	const [analysisComplete, setAnalysisComplete] = useState(false);
+
 	const [isConnected, setIsConnected] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [timeframe, setTimeframe] = useState('3m');
@@ -245,10 +247,15 @@ export function BudgetingTab({ startupIdea }: BudgetingTabProps) {
 
 								<Alert>
 									<LineChart className="h-4 w-4" />
-									<AlertTitle>Analysis Complete</AlertTitle>
+									<AlertTitle>
+										{analysisComplete ? 'Analysis Complete' : 'Analysis in progress'}
+									</AlertTitle>
 									<AlertDescription>
-										We've analyzed your transactions and prepared budget recommendations. View them
-										in the Overview tab.
+										{/* We've analyzed your transactions and prepared budget recommendations. View them
+										in the Overview tab. */}
+										{analysisComplete
+											? "We've analyzed your transactions and prepared budget recommendations. View them in the Overview tab."
+											: "We're currently analyzing your transactions to provide budget recommendations. This may take a few minutes."}
 									</AlertDescription>
 								</Alert>
 							</CardContent>
