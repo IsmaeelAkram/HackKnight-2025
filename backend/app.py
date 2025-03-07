@@ -145,6 +145,45 @@ def market_research():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route("/outreach", methods=["POST"])
+def outreach():
+    data = request.json
+    idea = data.get("idea")
+
+    if not idea:
+        return jsonify({"error": "Do you not have any ideas?"}), 400
+    
+    prompt = f'''
+
+    '''
+
+    messages = [
+        {
+            "role": "system",
+            "content": "You are an artificial intelligence assistant and you need to "
+            "engage in a helpful, detailed, polite conversation with a user.",
+        },
+        {
+            "role": "user",
+            "content": prompt,
+        },
+    ]
+
+    try:
+        print("Starting Outreach Creation...")
+        response = client.chat.completions.create(
+            model="sonar-pro",
+            messages=messages,
+        )
+        print("Outreach complete.")
+        raw_out = response.choices[0].message.content
+        print("ai output", raw_out)
+
+        json_out = json.loads(raw_out)
+        return jsonify(json_out), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 if __name__ == "__main__":
     app.run()
