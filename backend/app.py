@@ -154,7 +154,42 @@ def outreach():
         return jsonify({"error": "Do you not have any ideas?"}), 400
     
     prompt = f'''
+        As a seasoned copywriter who specializes in website copy for a company which is {idea} , your task is to write email templates for cold outreach 
+        and warm leads/referrals. Additionally you will write out the Cold Calling Script guide for initial phone conversations
+        this will include an Introduction, what to say if they show interest, a call to action and objection handling. Additionally
+        you will create a follow up email template. These emails generally should make reference to relevant market information.
 
+        Return all this info in ONLY JSON FORMAT. ONLY RETURN IN CORRECT JSON FORMAT, INCLUDE NO OTHER TEXT AND NO EXPLANATION. 
+        DO NOT PUT INTO MARKDOWN. DO NOT INCLUDE NEWLINES. DO NOT RETURN COMMENTS.
+
+        Example (sample, adjust values when necessary):
+        {{
+            "Emails": {{
+                "ColdEmailTemplate" : "Subject: Solve Your Coffee Challenges with CoffeeHub\n\nDear [Recipient Name],\n\nI hope this email finds you well. My name is [Your Name] from fdhsfhHub, and I'm reaching out because I noticed that [Company Name] might be facing challenges with fdhsfh.\n\nAt fdhsfhHub, we've developed a solution that helps businesses like yours:\n• [Benefit 1]\n• [Benefit 2]\n• [Benefit 3]\n\nWe've already helped companies like [Reference Company] achieve [specific result], and I'd love to show you how we could do the same for [Company Name].\n\nWould you be available for a quick 15-minute call next week to discuss how fdhsfhHub could help your team? I'm free on [Date/Time] or [Date/Time].\n\nLooking forward to connecting,\n\n[Your Name]\n[Your Title]\nfdhsfhHub\n[Phone Number]\n[Email]",
+                "IntroductionEmail" : "Subject: Following Up on [Referrer]'s Introduction\n\nDear [Recipient Name],\n\nI hope this email finds you well. [Referrer Name] suggested I reach out to you regarding the coffee challenges your team might be facing.\n\nAt coffeeHub, we specialize in helping businesses like yours overcome these challenges through our innovative platform. Our solution enables:\n\n• [Key Feature 1] that delivers [Benefit 1]\n• [Key Feature 2] that ensures [Benefit 2]\n• [Key Feature 3] that provides [Benefit 3]\n\nI'd love to schedule a brief call to learn more about your specific needs and show you how coffeeHub might be able to help. Would you have 15 minutes available this week?\n\nLooking forward to connecting,\n\n[Your Name]\n[Your Title]\ncoffeeHub\n[Phone Number]\n[Email]",
+                "FollowUpEmail" : "Subject: Following up on CoffeeHub for [Company Name]\n\nDear [Name],\n\nI wanted to follow up on my previous message about how CoffeeHub can help [Company Name] with coffee.\n\nI thought you might find this [case study/article/resource] valuable: [Link]\n\nIt shows how [Company Similar to Prospect] was able to [achieve specific result] after implementing our solution.\n\nI'd still love to schedule a quick call to discuss your specific needs. Would any of these times work for you?\n- [Date/Time Option 1]\n- [Date/Time Option 2]\n- [Date/Time Option 3]\n\nLooking forward to connecting,\n\n[Your Name]\nCoffeeHub"
+
+    
+            }}, 
+            "Calls": {{
+                "Introduction" : "Hi [Name], this is [Your Name] from CoffeeHub. How are you doing today? [Pause for response] Great! The reason I'm calling is that we help businesses overcome challenges with Coffee, and I was wondering if that's something your team is currently dealing with?",
+                "Interested" : "I'd love to learn more about your specific challenges. Could you tell me a bit about how your team currently handles coffee? [Listen and take notes] That's really helpful to understand. Many of our clients faced similar challenges before working with us. What we've developed is a solution that [explain 1-2 key benefits relevant to their pain points].",
+                "CallToAction" : "I'd love to show you a quick demo of how our solution works and discuss how it might fit your specific needs. Would you be available for a 20-minute call later this week? I have openings on [suggest 2-3 specific times].",
+                "ObjectionHandling" : [
+                {{
+                    "objection": "We're already using another solution",
+                    "response": "I understand. Many of our current clients switched from other solutions because of our [unique value proposition]. Would you be open to seeing how we compare to your current solution?"
+
+                }},
+                {{
+                    "objection": "We don't have budget right now",
+                    "response": "I completely understand budget constraints. Our solution actually helps companies save [average savings amount] within the first [timeframe]. Would it make sense to at least explore if those savings could apply to your situation?"
+                }}
+                ]
+            }},
+              
+       }} 
+    
     '''
 
     messages = [
