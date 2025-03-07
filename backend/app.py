@@ -8,7 +8,7 @@ YOUR_API_KEY = "INSERT API KEY HERE"
 
 @app.route("/market", methods=['POST'])
 def market_research():
-    data = request.json()
+    data = request.json
     idea = data.get("idea")
 
     if not idea:
@@ -41,9 +41,12 @@ def market_research():
         try:
             return jsonify(response.choices[0].messages[0]), 200
         except Exception as e:
-            return jsonify({"error", str(e)}), 500
+            return jsonify({"error" : str(e)}), 500
     except Exception as e: 
-        return jsonify({"error", str(e)}), 500
+        return jsonify({"error" : str(e)}), 500
+    
+if(__name__ == "__main__"):
+    app.run()
 
 
 #{Market size estimation, market trend identification, SWOT analysis, competitive landscape analysis}
