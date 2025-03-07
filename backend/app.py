@@ -1,11 +1,12 @@
 from flask import Flask, request, jsonify
-import openai
 
 app = Flask(__name__)
 
-#openai key
+from openai import OpenAI
 
-@app.route("/market", methods = ['POST'])
+YOUR_API_KEY = "INSERT API KEY HERE"
+
+@app.route("/market", methods=['POST'])
 def market_research():
     data = request.json()
     idea = data.get("idea")
@@ -14,28 +15,35 @@ def market_research():
         return jsonify({"error": "no idea"}), 400
     
     prompt = f"gimme market research for {idea}"
-    
+
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                "You are an artificial intelligence assistant and you need to "
+                "engage in a helpful, detailed, polite conversation with a user."
+            ),
+        },
+        {   
+            "role": "user",
+            "content": (prompt),
+        },
+    ]
+
+    client = OpenAI(api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai")
+
+    #won't load until query completes
     try:
-        response = openai.chat.completions.create(
-        model="gpt-4o",
-        messages=[
-            {"role": "developer", "content": "You are a helpful assistant."},
-            {
-                "role": "user",
-                "content" : prompt
-            }
-        ]
+        response = client.chat.completions.create(
+            model="sonar-deep-research",
+            messages=messages,
         )
         try:
-            return jsonify(response.choices[0].messages[0])
+            return jsonify(response.choices[0].messages[0]), 200
         except Exception as e:
-            return jsonify({"error": str(e)}), 500 
-        
-    
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+            return jsonify({"error", str(e)}), 500
+    except Exception as e: 
+        return jsonify({"error", str(e)}), 500
 
-    
 
-#{}}
 #{Market size estimation, market trend identification, SWOT analysis, competitive landscape analysis}
