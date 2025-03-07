@@ -1,10 +1,12 @@
+from dotenv import load_dotenv
 from flask import Flask, request, jsonify
+import os
 
 app = Flask(__name__)
 
 from openai import OpenAI
-
-YOUR_API_KEY = "INSERT API KEY HERE"
+load_dotenv() #get api key from .env
+PERPLEXITY_API_KEY = os.environ.get('PERPLEXITY_API_KEY')
 
 @app.route("/market", methods=['POST'])
 def market_research():
@@ -30,7 +32,7 @@ def market_research():
         },
     ]
 
-    client = OpenAI(api_key=YOUR_API_KEY, base_url="https://api.perplexity.ai")
+    client = OpenAI(api_key=PERPLEXITY_API_KEY, base_url="https://api.perplexity.ai")
 
     #won't load until query completes
     try:
