@@ -364,9 +364,8 @@ def pricing_strategy():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
-@app.route("/branding", methods=["POST"])
-def branding():
+@app.route("/branding/images", methods=["POST"])
+def branding_images():
     data = request.json
     idea = data.get("idea")
 
@@ -375,22 +374,23 @@ def branding():
 
     logoPrompt = f"""
         You are a professional graphic designer. Design a professional logo for a new startup who's concept is
-        {idea}
+        {idea}. Make the design sleek and minimalistic, don't add non-english text, and only in a clear/readable fontand make the colors bold.
     """
 
     websiteBannerPrompt = f"""
         You are a professional graphic designer. Design a professional website banner for a new startup who's concept is
-        {idea}. Craft it with attracting customers in mind
+        {idea}. Craft it with attracting customers in mind, but make it minimalistic and only use english text in a clear/readable font and only when strictly necessary.
     """
 
     socialMediaAvatarPrompt = f"""
         You are a professional graphic designer. Design a professional social media logo for a new startup who's concept is
-        {idea}
+        {idea}. The logo should be standard with colors that reflect a professional atmosphere. There should be no/minimal tex
+        and if text must be added, ensure it is only english in a clear/readable font
     """
 
     emailHeaderPrompt = f"""
         You are a professional graphic designer. Design a professional email header for a new startup who's concept is
-        {idea}
+        {idea}. This header should be professional and sleek with exclusively english text in a clear/readable font
     """
 
     logo = imageClient.images.generate(
@@ -439,6 +439,10 @@ def branding():
         }
     )
 
+
+@app.route("/branding/text", methods=["POST"])
+def branding_text():
+    return jsonify({"error": "not just yet"}), 500
 
 @app.route("/budgeting")
 def budgeting():
