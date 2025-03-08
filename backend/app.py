@@ -1,5 +1,6 @@
 import json
 import os
+import base64
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
@@ -10,7 +11,9 @@ from openai import OpenAI
 
 load_dotenv()  # get api key from .env
 PERPLEXITY_API_KEY = os.environ.get("PERPLEXITY_API_KEY")
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 client = OpenAI(api_key=PERPLEXITY_API_KEY, base_url="https://api.perplexity.ai")
+imageClient = OpenAI(api_key=OPENAI_API_KEY)
 
 
 @app.route("/")
@@ -231,9 +234,7 @@ def pricing_strategy():
 
     if not idea:
         return jsonify({"error": str(e)}), 500
-    #should we also feed in the info from market analysis into this prompt?
-    #we could store this info in SQL database or using Redis potentially for low-latency
-    #we should also store the specific competitors, to make sure we get consistent competitors
+    #call market api first and pass in competitors as parameters into pricing strategy/modify prompt as well
     prompt = f'''
         You are an expert consultant for company who's premise is {idea}, and they need to come up with
         competitive pricing tiers. Select one of the following to be the selected pricing model: 1) Subscription-Based,
@@ -353,8 +354,33 @@ def pricing_strategy():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.rout("/branding", methods=["POST"])
+def branding():
+    data = request.json
+    idea = data.get("idea")
 
+    if not idea:
+        return jsonify({"error": "You don't have any ideas?"}), 500
+    
+    logoPrompt = f'''
+        AI generated logo for {idea}
+    '''
 
+    logo = imageClient.images.generate(
+        model="dall-e-3",
+        prompt=logoPrompt,
+        size="480x480",
+        quality="standard",
+        n=1,
+    )
+
+    logo_url = logo.data[0].url
+    logo_data = request.get(logo_url).content
+    encoded_logo = base64.b64encode((logo_data).decode("utf-8"))
+
+    return jsonify({
+        "logo" : encoded_logo
+    })
 @app.route("/budgeting")
 def budgeting():
     return jsonify({"error": "Not implemented yet"}), 500
