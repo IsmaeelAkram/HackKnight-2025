@@ -446,7 +446,43 @@ def branding_images():
 
 @app.route("/branding/text", methods=["POST"])
 def branding_text():
-    return jsonify({"error": "not just yet"}), 500
+    data = request.json
+    idea = data.get("idea")
+
+    if not idea:
+        return jsonify({"error": str(e)}), 500
+
+    prompt = f"""
+
+
+    """
+
+    messages = [
+        {
+            "role": "system",
+            "content": "You are an artificial intelligence assistant and you need to "
+            "engage in a helpful, detailed, polite conversation with a user.",
+        },
+        {
+            "role": "user",
+            "content": prompt,
+        },
+    ]
+
+    try:
+        print("Starting Branding Text...")
+        response = client.chat.completions.create(
+            model="sonar-pro",
+            messages=messages,
+        )
+        print("Branding complete.")
+        raw_out = response.choices[0].message.content
+        print("ai output", raw_out)
+
+        json_out = json.loads(raw_out)
+        return jsonify(json_out), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/budgeting")
 def budgeting():
