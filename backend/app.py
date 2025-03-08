@@ -453,8 +453,32 @@ def branding_text():
         return jsonify({"error": str(e)}), 500
 
     prompt = f"""
+        You are an expert brander/marketing professional trying to help a startup with the idea to {idea} develop
+        their brand identity. Based off their idea generate 3 colors to form their brand. Additionally create a sample
+        linkedin post, twitter post, and instagram post in the brand's voice. Additionally generate a tagline for the business
+        card of this company.
 
+        Now using all the information you've collected, return this information in JSON format.
+        ONLY RETURN IN CORRECT JSON FORMAT, INCLUDE NO OTHER TEXT AND NO EXPLANATION. DO NOT PUT INTO MARKDOWN. DO NOT INCLUDE NEWLINES. DO NOT RETURN COMMENTS.
 
+        Example (sample format, adjust data as needed): 
+
+        {{
+        "brand_identity"{{
+            "idea": "civic engagement platform for government updates and representative outreach",
+            "colors": {{
+            "primary": "#1E3A8A",
+            "secondary": "#FBBF24",
+            "accent": "#D97706"
+            }},
+            "tagline": "Empowering Your Voice, Strengthening Democracy",
+            "social_media_posts": {{
+            "linkedin": "🌍 Stay informed, stay connected! We bring you the latest updates on government activities and make it easier than ever to reach out to your representatives. Join the movement for more transparent, engaged democracy! #CivicEngagement #GovernmentUpdates #StayInformed",
+            "twitter": "Your voice matters! Get real-time updates on government policies and contact your representatives in just a few clicks. #CivicEngagement #GovernmentUpdates #MakeYourVoiceHeard",
+            "instagram": "Informed citizens make better decisions! Stay updated on government policies, and take action by connecting directly with your representatives. 🔗 #EmpowerYourVoice #CivicEngagement #GovernmentUpdates"
+            }},
+        }}
+        }}
     """
 
     messages = [
