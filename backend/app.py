@@ -3,8 +3,17 @@ import os
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 app = Flask(__name__)
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["1 per minute"],
+    storage_uri="memory://",
+)
+
 
 from openai import OpenAI
 
@@ -152,6 +161,7 @@ def market_research():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
 @app.route("/outreach", methods=["POST"])
 def outreach():
     data = request.json
@@ -159,8 +169,8 @@ def outreach():
 
     if not idea:
         return jsonify({"error": "Do you not have any ideas?"}), 400
-    
-    prompt = f'''
+
+    prompt = f"""
         As a seasoned copywriter who specializes in website copy for a company which is {idea} , your task is to write email templates for cold outreach 
         and warm leads/referrals. Additionally you will write out the Cold Calling Script guide for initial phone conversations
         this will include an Introduction, what to say if they show interest, a call to action and objection handling. Additionally
@@ -197,7 +207,7 @@ def outreach():
               
        }} 
     
-    '''
+    """
 
     messages = [
         {
@@ -226,6 +236,7 @@ def outreach():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
 @app.route("/pricing", methods=["POST"])
 def pricing_strategy():
     data = request.json
@@ -233,8 +244,8 @@ def pricing_strategy():
 
     if not idea:
         return jsonify({"error": str(e)}), 500
-    #call market api first and pass in competitors as parameters into pricing strategy/modify prompt as well
-    prompt = f'''
+    # call market api first and pass in competitors as parameters into pricing strategy/modify prompt as well
+    prompt = f"""
         You are an expert consultant for company who's premise is {idea}, and they need to come up with
         competitive pricing tiers. Select one of the following to be the selected pricing model: 1) Subscription-Based,
         2) One-Time Price 3)Usage-Based. Select the correct one based on the context for the idea being {idea}.
@@ -324,7 +335,7 @@ def pricing_strategy():
         }}
         }}
 
-    '''
+    """
 
     messages = [
         {
@@ -353,6 +364,7 @@ def pricing_strategy():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
 @app.route("/branding", methods=["POST"])
 def branding():
     data = request.json
@@ -360,26 +372,26 @@ def branding():
 
     if not idea:
         return jsonify({"error": "You don't have any ideas?"}), 500
-    
-    logoPrompt = f'''
+
+    logoPrompt = f"""
         You are a professional graphic designer. Design a professional logo for a new startup who's concept is
         {idea}
-    '''
+    """
 
-    websiteBannerPrompt = f'''
+    websiteBannerPrompt = f"""
         You are a professional graphic designer. Design a professional website banner for a new startup who's concept is
         {idea}. Craft it with attracting customers in mind
-    '''
+    """
 
-    socialMediaAvatarPrompt = f'''
+    socialMediaAvatarPrompt = f"""
         You are a professional graphic designer. Design a professional social media logo for a new startup who's concept is
         {idea}
-    '''
+    """
 
-    emailHeaderPrompt = f'''
+    emailHeaderPrompt = f"""
         You are a professional graphic designer. Design a professional email header for a new startup who's concept is
         {idea}
-    ''' 
+    """
 
     logo = imageClient.images.generate(
         model="dall-e-2",
@@ -418,12 +430,15 @@ def branding():
     social_media_avatar_url = socialMediaAvatar.data[0].url
     email_header_url = emailHeader.data[0].url
 
-    return jsonify({
-        "logo" : logo_url,
-        "websiteBanner" : website_banner_url,
-        "socialMediaAvatar" : social_media_avatar_url,
-        "emailHeader" : email_header_url
-    })
+    return jsonify(
+        {
+            "logo": logo_url,
+            "websiteBanner": website_banner_url,
+            "socialMediaAvatar": social_media_avatar_url,
+            "emailHeader": email_header_url,
+        }
+    )
+
 
 @app.route("/budgeting")
 def budgeting():
