@@ -409,14 +409,28 @@ def branding():
         quality="standard",
         n=1,
     )
-    
 
     logo_url = logo.data[0].url
     logo_data = request.get(logo_url).content
     encoded_logo = base64.b64encode((logo_data).decode("utf-8"))
 
+    website_banner_url = websiteBanner.data[0].url
+    website_banner_data = request.get(website_banner_url).content
+    encoded_website_banner = base64.b64encode((website_banner_data).decode("utf-8"))
+
+    social_media_avatar_url = socialMediaAvatar.data[0].url
+    social_media_avatar_data = request.get(social_media_avatar_url).content
+    encoded_social_media_avatar = base64.b64encode((social_media_avatar_data).decode("utf-8"))
+
+    email_header_url = emailHeader.data[0].url
+    email_header_data = request.get(email_header_url).content
+    encoded_email_header = base64.b64encode((email_header_data).decode("utf-8"))
+
     return jsonify({
-        "logo" : encoded_logo
+        "logo" : encoded_logo,
+        "websiteBanner": encoded_website_banner,
+        "socialMediaAvatar" : encoded_social_media_avatar,
+        "emailHeader" : encoded_email_header
     })
 @app.route("/budgeting")
 def budgeting():
