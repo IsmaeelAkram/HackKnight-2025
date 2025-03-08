@@ -224,6 +224,46 @@ def outreach():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route("/pricing", methods=["POST"])
+def pricing_strategy():
+    data = request.json
+    idea = data.get("idea")
+
+    if not idea:
+        return jsonify({"error": str(e)}), 500
+    
+    prompt = f'''
+
+    '''
+
+    messages = [
+        {
+            "role": "system",
+            "content": "You are an artificial intelligence assistant and you need to "
+            "engage in a helpful, detailed, polite conversation with a user.",
+        },
+        {
+            "role": "user",
+            "content": prompt,
+        },
+    ]
+
+    try:
+        print("Starting Pricing Strategy...")
+        response = client.chat.completions.create(
+            model="sonar-pro",
+            messages=messages,
+        )
+        print("Strategizing complete.")
+        raw_out = response.choices[0].message.content
+        print("ai output", raw_out)
+
+        json_out = json.loads(raw_out)
+        return jsonify(json_out), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 
 @app.route("/budgeting")
 def budgeting():
