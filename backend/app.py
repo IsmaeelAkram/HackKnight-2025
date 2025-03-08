@@ -366,6 +366,18 @@ def branding():
         AI generated logo for {idea}
     '''
 
+    websiteBannerPrompt = f'''
+        AI generated website banner for {idea}
+    '''
+
+    socialMediaAvatarPrompt = f'''
+        AI generated social media avatar for {idea}
+    '''
+
+    emailHeaderPrompt = f'''
+        AI generated email header image for {idea}
+    ''' 
+
     logo = imageClient.images.generate(
         model="dall-e-3",
         prompt=logoPrompt,
@@ -373,6 +385,31 @@ def branding():
         quality="standard",
         n=1,
     )
+
+    websiteBanner = imageClient.images.generate(
+        model="dall-e-3",
+        prompt=websiteBannerPrompt,
+        size="480x480",
+        quality="standard",
+        n=1,
+    )
+
+    socialMediaAvatar = imageClient.images.generate(
+        model="dall-e-3",
+        prompt=socialMediaAvatarPrompt,
+        size="480x480",
+        quality="standard",
+        n=1,
+    )
+
+    emailHeader = imageClient.images.generate(
+        model="dall-e-3",
+        prompt=emailHeaderPrompt,
+        size="480x480",
+        quality="standard",
+        n=1,
+    )
+    
 
     logo_url = logo.data[0].url
     logo_data = request.get(logo_url).content
