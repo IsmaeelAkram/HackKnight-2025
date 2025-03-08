@@ -354,7 +354,7 @@ def pricing_strategy():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.rout("/branding", methods=["POST"])
+@app.route("/branding", methods=["POST"])
 def branding():
     data = request.json
     idea = data.get("idea")
@@ -385,7 +385,7 @@ def branding():
     logo = imageClient.images.generate(
         model="dall-e-3",
         prompt=logoPrompt,
-        size="480x480",
+        size="512x512",
         quality="standard",
         n=1,
     )
@@ -393,7 +393,7 @@ def branding():
     websiteBanner = imageClient.images.generate(
         model="dall-e-3",
         prompt=websiteBannerPrompt,
-        size="480x480",
+        size="1792x1024",
         quality="standard",
         n=1,
     )
@@ -401,7 +401,7 @@ def branding():
     socialMediaAvatar = imageClient.images.generate(
         model="dall-e-3",
         prompt=socialMediaAvatarPrompt,
-        size="480x480",
+        size="512x512",
         quality="standard",
         n=1,
     )
@@ -409,7 +409,7 @@ def branding():
     emailHeader = imageClient.images.generate(
         model="dall-e-3",
         prompt=emailHeaderPrompt,
-        size="480x480",
+        size="1792x1024",
         quality="standard",
         n=1,
     )
