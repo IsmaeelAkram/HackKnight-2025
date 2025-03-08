@@ -240,7 +240,7 @@ def pricing_strategy():
         2) One-Time Price 3)Usage-Based. Select the correct one based on the context for the idea being {idea}.
 
         After selecting the pricing model set three tiers of pricing, which could be for subscription based and usage based
-        different monthly tiers at different price ranges such as a Basic/Professional/Enterprise Version, and if a one-time
+        different monthly tiers at different price ranges a low tier, a mid tier, and a high tier, and if a one-time
         pricing model is selected, then 3 potential price points are selected.
 
         Afterwards analyze the top 3 competitors in this space and their prices/pricing models and the key differentiator
