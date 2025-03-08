@@ -394,9 +394,9 @@ def branding_images():
     """
 
     logo = imageClient.images.generate(
-        model="dall-e-2",
+        model="dall-e-3",
         prompt=logoPrompt,
-        size="512x512",
+        size="1024x1024",
         quality="standard",
         n=1,
     )
@@ -410,9 +410,9 @@ def branding_images():
     )
 
     socialMediaAvatar = imageClient.images.generate(
-        model="dall-e-2",
+        model="dall-e-3",
         prompt=socialMediaAvatarPrompt,
-        size="512x512",
+        size="1024x1024",
         quality="standard",
         n=1,
     )
