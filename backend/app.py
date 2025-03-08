@@ -1,10 +1,8 @@
 import json
 import os
-import base64
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
-import requests
 
 app = Flask(__name__)
 
@@ -419,8 +417,6 @@ def branding():
     website_banner_url = websiteBanner.data[0].url
     social_media_avatar_url = socialMediaAvatar.data[0].url
     email_header_url = emailHeader.data[0].url
-    
-    
 
     return jsonify({
         "logo" : logo_url,
@@ -436,6 +432,3 @@ def budgeting():
 
 if __name__ == "__main__":
     app.run()
-
-
-# {Market size estimation, market trend identification, SWOT analysis, competitive landscape analysis}
