@@ -231,8 +231,98 @@ def pricing_strategy():
 
     if not idea:
         return jsonify({"error": str(e)}), 500
-    
+    #should we also feed in the info from market analysis into this prompt?
+    #we could store this info in SQL database or using Redis potentially for low-latency
+    #we should also store the specific competitors, to make sure we get consistent competitors
     prompt = f'''
+        You are an expert consultant for company who's premise is {idea}, and they need to come up with
+        competitive pricing tiers. Select one of the following to be the selected pricing model: 1) Subscription-Based,
+        2) One-Time Price 3)Usage-Based. Select the correct one based on the context for the idea being {idea}.
+
+        After selecting the pricing model set three tiers of pricing, which could be for subscription based and usage based
+        different monthly tiers at different price ranges such as a Basic/Professional/Enterprise Version, and if a one-time
+        pricing model is selected, then 3 potential price points are selected.
+
+        Afterwards analyze the top 3 competitors in this space and their prices/pricing models and the key differentiator
+        whether that be the product itself or the difference in price. Based off this, generate 3 short and concise key insights.
+
+        Next, based on the generated pricing model, calculate a sample monthly revenue, monthly costs, and monthly profit, as well as
+        how much of the revenue comes from each pricing tier. For the monthly costs you should also have how you should allocate those funds. 
+        You should also come up with some optimization opportunities with a profit-based focus.
+
+        Now using all the information you've collected, return this information in JSON format.
+        ONLY RETURN IN CORRECT JSON FORMAT, INCLUDE NO OTHER TEXT AND NO EXPLANATION. DO NOT PUT INTO MARKDOWN. DO NOT INCLUDE NEWLINES. DO NOT RETURN COMMENTS.
+
+        Example (sample format, adjust data as needed): 
+
+        {{
+        "selected_pricing_model": "{{Subscription-Based}}",
+        "pricing_tiers": {{
+            "Low_Tier": {{
+            "price": "{{29}}",
+            "features": ["{{Up to 3 Users}}", "{{5 Projects}}"]
+            }},
+            "Mid_Tier": {{
+            "price": "{{79}}",
+            "features": ["{{Up to 10 Users}}", "{{20 Projects}}", "{{Adavanced Analytics}}"]
+            }},
+            "High_Tier": {{
+            "price": "{{129}}",
+            "features": ["{{Unlimited Users}}", "{{Unlimited Projects}}", "{{Custom Analytics}}", "{{API Access}}"]
+            }}
+        }},
+        {{
+        "competitor_analysis": [
+            {{
+            "name": "{{Netflix}}",
+            "pricing_model": "{{Subscription-Based}}",
+            "price_points": ["{{20}}", "{{35}}", "{{50}}"],
+            "key_differentiator": "{{Well-known brand name}}"
+            }},
+            {{
+            "name": "{{Dropbox}}",
+            "pricing_model": "{{One-Time Price}}",
+            "price_points": ["{{20}}", "{{null}}", "{{null}}"],
+            "key_differentiator": "{{One-time Price}}"
+            }},
+            {{
+            "name": "{{Youtube}}",
+            "pricing_model": "{{Subscription-Based}}",
+            "price_points": ["{{0}}", "{{80}}", "{{120}}"],
+            "key_differentiator": "{{Creator economy}}"
+            }}
+        ],
+        "key_insights": [
+            "{{Your pricing is positioned in the mid-range of the market, offering a balance of features and affordability.}}",
+            "{{Youtube's freemium model may attract price-sensitive customers, but their paid tiers offer fewer features than yours.}}",
+            "{{Consider adding a free trial or money-back guarantee to reduce the perceived risk for new customers.}}"
+        ],
+        "financial_projection": {{
+            "monthly_revenue": "{{15750}}",
+            "monthly_costs": "{{6300}}",
+            "monthly_profit": "{{9450}}",
+            "profit_margin": "{{60}}, //return in terms of a percentage
+            "revenue_distribution": {{
+            "Low_Tier": "{{150}}", //number of basic users
+            "Mid_Tier": "{{75}}",
+            "High_Tier": "{{25}}"
+            }},
+            "cost_allocation": {{
+                "Infrastructure": "{{2500}}",
+                "Marketing": "{{1500}}",
+                "Customer Support": "{{1200}}",
+                "R&D": "{{700}}",
+                "Miscellaneous": "{{400}}"
+            }}
+        }},
+        "optimization_opportunities" : [
+            "{{Focus marketing efforts on Professional tier for highest ROI}}",
+            "{{Consider a 10% price increase on Enterprise tier to improve margins}}",
+            "{{Implement annual billing discounts to improve cash flow}}",
+            "{{Explore infrastructure cost optimizations to increase overall margins}}
+        ]
+        }}
+        }}
 
     '''
 
