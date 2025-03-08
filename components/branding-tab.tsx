@@ -13,12 +13,100 @@ import {
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import { useEffect, useState } from 'react';
+import CardLoading from './cardLoading';
+import { MoonLoader } from 'react-spinners';
 
 interface BrandingTabProps {
 	startupIdea: string;
 }
 
+interface BrandingImagesResponse {
+	emailHeader: string;
+	logo: string;
+	socialMediaAvatar: string;
+	websiteBanner: string;
+}
+
+interface BrandingTextResponse {
+	brand_identity: {
+		colors: {
+			accent: string;
+			primary: string;
+			secondary: string;
+		};
+		idea: string;
+		social_media_posts: {
+			instagram: string;
+			linkedin: string;
+			twitter: string;
+		};
+		tagline: string;
+	};
+}
+
+const imagesSampleData = {
+	emailHeader:
+		'https://oaidalleapiprodscus.blob.core.windows.net/private/org-OJa9c1twZuBC2SIOZIw0SNUW/pandora-backend/img-ER4LGOpxuVKFsGIcpcQ29JeN.png?st=2025-03-08T22%3A29%3A49Z&se=2025-03-09T00%3A29%3A49Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=d505667d-d6c1-4a0a-bac7-5c84a87759f8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-03-08T22%3A24%3A13Z&ske=2025-03-09T22%3A24%3A13Z&sks=b&skv=2024-08-04&sig=NTBQaHu1Hh8E9lRJlIgYdInENcESD5fCxuxf3pXc3w4%3D',
+	logo:
+		'https://oaidalleapiprodscus.blob.core.windows.net/private/org-OJa9c1twZuBC2SIOZIw0SNUW/pandora-backend/img-gmwpFcGjMFQPEjGTAukrHW96.png?st=2025-03-08T22%3A29%3A03Z&se=2025-03-09T00%3A29%3A03Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=d505667d-d6c1-4a0a-bac7-5c84a87759f8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-03-08T22%3A30%3A30Z&ske=2025-03-09T22%3A30%3A30Z&sks=b&skv=2024-08-04&sig=V7pGJyTp8jLj/8Prv4grCn5sLpHQoVCOWL4KRfLdvXA%3D',
+	socialMediaAvatar:
+		'https://oaidalleapiprodscus.blob.core.windows.net/private/org-OJa9c1twZuBC2SIOZIw0SNUW/pandora-backend/img-XLCEPHyjNW7cj62Py8EBZXZ8.png?st=2025-03-08T22%3A29%3A32Z&se=2025-03-09T00%3A29%3A32Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=d505667d-d6c1-4a0a-bac7-5c84a87759f8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-03-08T22%3A43%3A29Z&ske=2025-03-09T22%3A43%3A29Z&sks=b&skv=2024-08-04&sig=6x9N4mH/HmSBUpsfQYE3ARyLqRcqD5FFRV1MJ1IGhHc%3D',
+	websiteBanner:
+		'https://oaidalleapiprodscus.blob.core.windows.net/private/org-OJa9c1twZuBC2SIOZIw0SNUW/pandora-backend/img-VUQOUAzbmkRkioptkP3K5GsH.png?st=2025-03-08T22%3A29%3A21Z&se=2025-03-09T00%3A29%3A21Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=d505667d-d6c1-4a0a-bac7-5c84a87759f8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-03-08T23%3A02%3A26Z&ske=2025-03-09T23%3A02%3A26Z&sks=b&skv=2024-08-04&sig=8DQChpf7Uh8rhlNHzP%2B799CfIf9pRQA0ee9Yjha48hc%3D',
+};
+
+const textSampleData = {
+	brand_identity: {
+		colors: {
+			accent: '#FFFF00',
+			primary: '#FFA500',
+			secondary: '#8B4513',
+		},
+		idea: 'Coffee shop that sells honey coffee',
+		social_media_posts: {
+			instagram:
+				"Honey, we've got the perfect brew for you! 🍯☕ Our unique honey coffee blend is creating quite a stir. Swipe to see how we craft this liquid gold, and come taste the buzz everyone's talking about! #HoneyCoffee #SweetBuzzSmoothSip #CoffeeLovers",
+			linkedin:
+				"🍯☕ Discover the perfect blend of nature's sweetness and coffee's boldness! Our honey coffee is creating quite a buzz. Experience a smooth, naturally sweet sip that'll have you coming back for more. #HoneyCoffee #SweetBuzzSmoothSip #UniqueBlend",
+			twitter:
+				'Bee-lieve the buzz! 🐝 Our honey coffee is the sweet treat your taste buds have been waiting for. Come in for a sip of liquid gold! ☕🍯 #HoneyCoffee #SweetBuzzSmoothSip',
+		},
+		tagline: 'Sweet Buzz, Smooth Sip',
+	},
+};
+
 export function BrandingTab({ startupIdea }: BrandingTabProps) {
+	const [imageData, setImageData] = useState<BrandingImagesResponse | null>(null);
+	const [textData, setTextData] = useState<BrandingTextResponse | null>(null);
+	useEffect(() => {
+		(async () => {
+			if (!startupIdea) return;
+			console.log(`Brand Generation for ${startupIdea}`);
+
+			let res = await fetch('http://127.0.0.1:5000/branding/images', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ idea: startupIdea }),
+			});
+			let data = await res.json();
+			setImageData(data);
+
+			res = await fetch('http://127.0.0.1:5000/branding/text', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ idea: startupIdea }),
+			});
+			data = await res.json();
+			setTextData(data);
+		})();
+	}, [startupIdea]);
+	if (!textData) return <CardLoading title="Branding" />;
+
 	// Generate a simple company name based on the startup idea
 	const generateCompanyName = (idea: string) => {
 		const words = idea.split(' ');
@@ -35,9 +123,9 @@ export function BrandingTab({ startupIdea }: BrandingTabProps) {
 			<h2 className="text-xl font-bold mb-4">Branding</h2>
 
 			<Tabs defaultValue="logo" className="w-full">
-				<TabsList className="grid w-full grid-cols-4">
+				<TabsList className="grid w-full grid-cols-3">
 					<TabsTrigger value="logo">Logo & Colors</TabsTrigger>
-					<TabsTrigger value="voice">Brand Voice</TabsTrigger>
+					{/* <TabsTrigger value="voice">Brand Voice</TabsTrigger> */}
 					<TabsTrigger value="social">Social Media</TabsTrigger>
 					<TabsTrigger value="assets">Assets</TabsTrigger>
 				</TabsList>
@@ -52,13 +140,17 @@ export function BrandingTab({ startupIdea }: BrandingTabProps) {
 							<CardContent className="flex flex-col items-center justify-center">
 								<div className="bg-primary/10 rounded-full p-8 mb-4">
 									<div className="w-32 h-32 relative">
-										<Image
-											src="/placeholder.svg?height=128&width=128"
-											alt={`${companyName} logo`}
-											width={128}
-											height={128}
-											className="object-contain"
-										/>
+										{imageData ? (
+											<Image
+												src={imageData.logo}
+												alt={`${companyName} logo`}
+												width={128}
+												height={128}
+												className="object-contain"
+											/>
+										) : (
+											<MoonLoader size={16} />
+										)}
 									</div>
 								</div>
 								<div className="text-center">
@@ -87,35 +179,65 @@ export function BrandingTab({ startupIdea }: BrandingTabProps) {
 								<div className="space-y-4">
 									<div className="flex flex-col gap-2">
 										<div className="flex items-center gap-2">
-											<div className="w-6 h-6 rounded-full bg-primary"></div>
+											<div
+												className="w-6 h-6 rounded-full"
+												style={{
+													background: textData.brand_identity.colors.primary,
+												}}
+											></div>
 											<span>Primary</span>
 											<Badge variant="outline" className="ml-auto">
-												#4F46E5
+												{textData.brand_identity.colors.primary}
 											</Badge>
 										</div>
-										<div className="h-12 rounded-md bg-primary"></div>
+										<div
+											className="h-12 rounded-md"
+											style={{
+												background: textData.brand_identity.colors.primary,
+											}}
+										></div>
 									</div>
 
 									<div className="flex flex-col gap-2">
 										<div className="flex items-center gap-2">
-											<div className="w-6 h-6 rounded-full bg-secondary"></div>
+											<div
+												className="w-6 h-6 rounded-full"
+												style={{
+													background: textData.brand_identity.colors.secondary,
+												}}
+											></div>
 											<span>Secondary</span>
 											<Badge variant="outline" className="ml-auto">
-												#10B981
+												{textData.brand_identity.colors.secondary}
 											</Badge>
 										</div>
-										<div className="h-12 rounded-md bg-secondary"></div>
+										<div
+											className="h-12 rounded-md"
+											style={{
+												background: textData.brand_identity.colors.secondary,
+											}}
+										></div>
 									</div>
 
 									<div className="flex flex-col gap-2">
 										<div className="flex items-center gap-2">
-											<div className="w-6 h-6 rounded-full bg-accent"></div>
+											<div
+												className="w-6 h-6 rounded-full"
+												style={{
+													background: textData.brand_identity.colors.accent,
+												}}
+											></div>
 											<span>Accent</span>
 											<Badge variant="outline" className="ml-auto">
-												#F59E0B
+												{textData.brand_identity.colors.accent}
 											</Badge>
 										</div>
-										<div className="h-12 rounded-md bg-accent"></div>
+										<div
+											className="h-12 rounded-md"
+											style={{
+												background: textData.brand_identity.colors.accent,
+											}}
+										></div>
 									</div>
 								</div>
 							</CardContent>
@@ -197,17 +319,7 @@ export function BrandingTab({ startupIdea }: BrandingTabProps) {
 							<CardContent>
 								<div className="space-y-4">
 									<div className="rounded-md border p-3">
-										<p className="text-sm">
-											Excited to announce the launch of {companyName}! We're revolutionizing how
-											businesses approach {startupIdea.toLowerCase()}. Stay tuned for updates!
-											#StartupLife #Innovation
-										</p>
-									</div>
-									<div className="rounded-md border p-3">
-										<p className="text-sm">
-											Did you know that 78% of businesses struggle with {startupIdea.toLowerCase()}?
-											At {companyName}, we're changing that. Learn how: [link] #BusinessTips
-										</p>
+										<p className="text-sm">{textData.brand_identity.social_media_posts.twitter}</p>
 									</div>
 								</div>
 							</CardContent>
@@ -236,15 +348,7 @@ export function BrandingTab({ startupIdea }: BrandingTabProps) {
 							<CardContent>
 								<div className="space-y-4">
 									<div className="rounded-md border p-3">
-										<p className="text-sm">
-											We're thrilled to announce the launch of {companyName}! Our mission is to help
-											businesses overcome challenges with {startupIdea.toLowerCase()} through our
-											innovative platform.
-										</p>
-										<p className="text-sm mt-2">
-											After months of research and development, we're ready to share our solution
-											with the world. Connect with us to learn how we can help your business grow.
-										</p>
+										<p className="text-sm">{textData.brand_identity.social_media_posts.linkedin}</p>
 									</div>
 								</div>
 							</CardContent>
@@ -258,11 +362,8 @@ export function BrandingTab({ startupIdea }: BrandingTabProps) {
 							<CardContent>
 								<div className="space-y-4">
 									<div className="rounded-md border p-3">
-										<p className="text-sm">✨ Introducing {companyName} ✨</p>
-										<p className="text-sm mt-2">
-											We're on a mission to transform how businesses handle{' '}
-											{startupIdea.toLowerCase()}. Follow our journey as we innovate and grow!
-											#StartupLife #Innovation #BusinessSolutions
+										<p className="text-sm">
+											{textData.brand_identity.social_media_posts.instagram}
 										</p>
 									</div>
 								</div>
@@ -324,13 +425,17 @@ export function BrandingTab({ startupIdea }: BrandingTabProps) {
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 								<div className="border rounded-md p-4 flex flex-col items-center">
 									<div className="bg-primary/10 rounded-md p-4 mb-4">
-										<Image
-											src="/placeholder.svg?height=100&width=200"
-											alt="Banner"
-											width={200}
-											height={100}
-											className="object-contain"
-										/>
+										{imageData ? (
+											<Image
+												src={imageData.websiteBanner}
+												alt="Banner"
+												width={200}
+												height={100}
+												className="object-contain"
+											/>
+										) : (
+											<MoonLoader size={16} />
+										)}
 									</div>
 									<h3 className="font-medium">Website Banner</h3>
 									<p className="text-sm text-muted-foreground mb-4">1200 x 600px</p>
@@ -342,13 +447,17 @@ export function BrandingTab({ startupIdea }: BrandingTabProps) {
 
 								<div className="border rounded-md p-4 flex flex-col items-center">
 									<div className="bg-primary/10 rounded-md p-4 mb-4">
-										<Image
-											src="/placeholder.svg?height=100&width=100"
-											alt="Social Media Avatar"
-											width={100}
-											height={100}
-											className="object-contain rounded-full"
-										/>
+										{imageData ? (
+											<Image
+												src={imageData?.socialMediaAvatar}
+												alt="Social Media Avatar"
+												width={100}
+												height={100}
+												className="object-contain rounded-full"
+											/>
+										) : (
+											<MoonLoader size={16} />
+										)}
 									</div>
 									<h3 className="font-medium">Social Media Avatar</h3>
 									<p className="text-sm text-muted-foreground mb-4">500 x 500px</p>
@@ -357,39 +466,27 @@ export function BrandingTab({ startupIdea }: BrandingTabProps) {
 										Download
 									</Button>
 								</div>
-
-								<div className="border rounded-md p-4 flex flex-col items-center">
-									<div className="bg-primary/10 rounded-md p-4 mb-4">
+							</div>
+							<div className="border rounded-md p-4 flex flex-col items-center mt-4">
+								<div className="bg-primary/10 rounded-md p-4 mb-4">
+									{imageData ? (
 										<Image
-											src="/placeholder.svg?height=100&width=200"
+											src={imageData?.emailHeader}
 											alt="Email Header"
-											width={200}
-											height={100}
+											width={200 * 1.5}
+											height={100 * 1.5}
 											className="object-contain"
 										/>
-									</div>
-									<h3 className="font-medium">Email Header</h3>
-									<p className="text-sm text-muted-foreground mb-4">600 x 200px</p>
-									<Button size="sm" variant="outline">
-										<Download className="mr-2 h-4 w-4" />
-										Download
-									</Button>
+									) : (
+										<MoonLoader size={16} />
+									)}
 								</div>
-
-								<div className="border rounded-md p-4 flex flex-col items-center">
-									<div className="bg-primary/10 rounded-md p-4 mb-4 flex items-center justify-center">
-										<div className="text-center">
-											<h3 className="text-xl font-bold">{companyName}</h3>
-											<p className="text-sm">Your tagline here</p>
-										</div>
-									</div>
-									<h3 className="font-medium">Business Card</h3>
-									<p className="text-sm text-muted-foreground mb-4">3.5 x 2 inches</p>
-									<Button size="sm" variant="outline">
-										<Download className="mr-2 h-4 w-4" />
-										Download
-									</Button>
-								</div>
+								<h3 className="font-medium">Email Header</h3>
+								<p className="text-sm text-muted-foreground mb-4">600 x 200px</p>
+								<Button size="sm" variant="outline">
+									<Download className="mr-2 h-4 w-4" />
+									Download
+								</Button>
 							</div>
 						</CardContent>
 					</Card>
