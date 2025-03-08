@@ -363,19 +363,23 @@ def branding():
         return jsonify({"error": "You don't have any ideas?"}), 500
     
     logoPrompt = f'''
-        AI generated logo for {idea}
+        You are a professional graphic designer. Design a professional logo for a new startup who's concept is
+        {idea}
     '''
 
     websiteBannerPrompt = f'''
-        AI generated website banner for {idea}
+        You are a professional graphic designer. Design a professional website banner for a new startup who's concept is
+        {idea}. Craft it with attracting customers in mind
     '''
 
     socialMediaAvatarPrompt = f'''
-        AI generated social media avatar for {idea}
+        You are a professional graphic designer. Design a professional social media logo for a new startup who's concept is
+        {idea}
     '''
 
     emailHeaderPrompt = f'''
-        AI generated email header image for {idea}
+        You are a professional graphic designer. Design a professional email header for a new startup who's concept is
+        {idea}
     ''' 
 
     logo = imageClient.images.generate(
