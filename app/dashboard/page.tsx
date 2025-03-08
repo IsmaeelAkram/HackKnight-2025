@@ -26,32 +26,32 @@ export default function Dashboard() {
 	// Default layouts for different screen sizes
 	const [layouts, setLayouts] = useState({
 		lg: [
-			{ i: 'market', x: 0, y: 0, w: 6, h: 8 },
-			{ i: 'branding', x: 6, y: 0, w: 6, h: 8 },
-			{ i: 'outreach', x: 0, y: 8, w: 6, h: 8 },
-			{ i: 'pricing', x: 6, y: 8, w: 6, h: 8 },
-			{ i: 'budgeting', x: 0, y: 16, w: 12, h: 10 },
+			{ i: 'budgeting', x: 0, y: 0, w: 12, h: 10 },
+			{ i: 'market', x: 0, y: 10, w: 6, h: 8 },
+			{ i: 'branding', x: 6, y: 10, w: 6, h: 8 },
+			{ i: 'outreach', x: 0, y: 18, w: 6, h: 8 },
+			{ i: 'pricing', x: 6, y: 18, w: 6, h: 8 },
 		],
 		md: [
-			{ i: 'market', x: 0, y: 0, w: 6, h: 8 },
-			{ i: 'branding', x: 6, y: 0, w: 6, h: 8 },
-			{ i: 'outreach', x: 0, y: 8, w: 6, h: 8 },
-			{ i: 'pricing', x: 6, y: 8, w: 6, h: 8 },
-			{ i: 'budgeting', x: 0, y: 16, w: 12, h: 10 },
+			{ i: 'budgeting', x: 0, y: 0, w: 12, h: 10 },
+			{ i: 'market', x: 0, y: 10, w: 6, h: 8 },
+			{ i: 'branding', x: 6, y: 10, w: 6, h: 8 },
+			{ i: 'outreach', x: 0, y: 18, w: 6, h: 8 },
+			{ i: 'pricing', x: 6, y: 18, w: 6, h: 8 },
 		],
 		sm: [
-			{ i: 'market', x: 0, y: 0, w: 12, h: 8 },
-			{ i: 'branding', x: 0, y: 8, w: 12, h: 8 },
-			{ i: 'outreach', x: 0, y: 16, w: 12, h: 8 },
-			{ i: 'pricing', x: 0, y: 24, w: 12, h: 8 },
-			{ i: 'budgeting', x: 0, y: 32, w: 12, h: 10 },
+			{ i: 'budgeting', x: 0, y: 0, w: 12, h: 10 },
+			{ i: 'market', x: 0, y: 10, w: 12, h: 8 },
+			{ i: 'branding', x: 0, y: 18, w: 12, h: 8 },
+			{ i: 'outreach', x: 0, y: 26, w: 12, h: 8 },
+			{ i: 'pricing', x: 0, y: 34, w: 12, h: 8 },
 		],
 		xs: [
-			{ i: 'market', x: 0, y: 0, w: 12, h: 8 },
-			{ i: 'branding', x: 0, y: 8, w: 12, h: 8 },
-			{ i: 'outreach', x: 0, y: 16, w: 12, h: 8 },
-			{ i: 'pricing', x: 0, y: 24, w: 12, h: 8 },
-			{ i: 'budgeting', x: 0, y: 32, w: 12, h: 10 },
+			{ i: 'budgeting', x: 0, y: 0, w: 12, h: 10 },
+			{ i: 'market', x: 0, y: 10, w: 12, h: 8 },
+			{ i: 'branding', x: 0, y: 18, w: 12, h: 8 },
+			{ i: 'outreach', x: 0, y: 26, w: 12, h: 8 },
+			{ i: 'pricing', x: 0, y: 34, w: 12, h: 8 },
 		],
 	});
 
@@ -91,6 +91,9 @@ export default function Dashboard() {
 					isResizable={false}
 					margin={[16, 16]}
 				>
+					<div key="budgeting" className="bg-card rounded-lg shadow-sm border overflow-auto">
+						<BudgetingTab startupIdea={startupIdea} />
+					</div>
 					<div key="market" className="bg-card rounded-lg shadow-sm border overflow-auto">
 						<MarketTab startupIdea={startupIdea} />
 					</div>
@@ -102,9 +105,6 @@ export default function Dashboard() {
 					</div>
 					<div key="pricing" className="bg-card rounded-lg shadow-sm border overflow-auto">
 						<PricingTab startupIdea={startupIdea} />
-					</div>
-					<div key="budgeting" className="bg-card rounded-lg shadow-sm border overflow-auto">
-						<BudgetingTab startupIdea={startupIdea} />
 					</div>
 				</ResponsiveGridLayout>
 			</main>

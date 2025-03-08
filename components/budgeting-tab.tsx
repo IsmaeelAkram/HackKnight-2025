@@ -47,7 +47,7 @@ interface BudgetingTabProps {
 }
 
 export function BudgetingTab({ startupIdea }: BudgetingTabProps) {
-	const [analysisComplete, setAnalysisComplete] = useState(false);
+	const [analysisComplete, setAnalysisComplete] = useState(true);
 
 	const [isConnected, setIsConnected] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
@@ -245,7 +245,7 @@ export function BudgetingTab({ startupIdea }: BudgetingTabProps) {
 									</div>
 								</div>
 
-								<Alert>
+								<Alert className={analysisComplete ? 'bg-green-100' : 'bg-yellow-100'}>
 									<LineChart className="h-4 w-4" />
 									<AlertTitle>
 										{analysisComplete ? 'Analysis Complete' : 'Analysis in progress'}
@@ -264,6 +264,7 @@ export function BudgetingTab({ startupIdea }: BudgetingTabProps) {
 									variant="outline"
 									className="w-full"
 									onClick={() => (window.location.hash = '#overview')}
+									disabled={!analysisComplete}
 								>
 									View Budget Overview
 									<ArrowRight className="ml-2 h-4 w-4" />
