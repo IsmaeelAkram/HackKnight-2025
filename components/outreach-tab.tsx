@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
+import CardLoading from './cardLoading';
 
 interface OutreachTabProps {
 	startupIdea: string;
@@ -58,20 +59,24 @@ const sampleData: OutreachGenResponse = {
 };
 
 export function OutreachTab({ startupIdea }: OutreachTabProps) {
-	const [data, setData] = useState<OutreachGenResponse | null>(sampleData);
+	const [data, setData] = useState<OutreachGenResponse | null>(null);
 	useEffect(() => {
 		(async () => {
 			if (!startupIdea) return;
 			console.log(`Outreach Generation for ${startupIdea}`);
 
-			const res = await fetch('/outreach', {
+			const res = await fetch('http://127.0.0.1:5000/outreach', {
 				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
 				body: JSON.stringify({ idea: startupIdea }),
 			});
 			const data = await res.json();
 			setData(data);
 		})();
 	}, [startupIdea]);
+	if (!data) return <CardLoading title="Outreach" />;
 
 	return (
 		<div className="h-full p-4">

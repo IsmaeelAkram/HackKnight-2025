@@ -4,6 +4,8 @@ import { BarChart, LineChart } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useEffect, useState } from 'react';
+import { MoonLoader } from 'react-spinners';
+import CardLoading from './cardLoading';
 
 interface MarketTabProps {
 	startupIdea: string;
@@ -158,20 +160,24 @@ const sampleData: MarketAnalysisResponse = {
 };
 
 export function MarketTab({ startupIdea }: MarketTabProps) {
-	const [data, setData] = useState<MarketAnalysisResponse | null>(sampleData);
+	const [data, setData] = useState<MarketAnalysisResponse | null>(null);
 	useEffect(() => {
 		(async () => {
 			if (!startupIdea) return;
 			console.log(`Market Analysis for ${startupIdea}`);
 
-			const res = await fetch('/market', {
+			const res = await fetch('http://127.0.0.1:5000/market', {
 				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
 				body: JSON.stringify({ idea: startupIdea }),
 			});
 			const data = await res.json();
 			setData(data);
 		})();
 	}, [startupIdea]);
+	if (!data) return <CardLoading title="Market Analysis" />;
 	return (
 		<div className="h-full p-4">
 			<h2 className="text-xl font-bold mb-4">Market Analysis</h2>

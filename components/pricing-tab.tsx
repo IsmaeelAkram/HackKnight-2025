@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
 import { useEffect, useState } from 'react';
+import CardLoading from './cardLoading';
 
 interface PricingTabProps {
 	startupIdea: string;
@@ -145,20 +146,25 @@ const sampleData: PricingStrategyResponse = {
 };
 
 export function PricingTab({ startupIdea }: PricingTabProps) {
-	const [data, setData] = useState<PricingStrategyResponse | null>(sampleData);
+	const [data, setData] = useState<PricingStrategyResponse | null>(null);
 	useEffect(() => {
 		(async () => {
 			if (!startupIdea) return;
 			console.log(`Pricing Strategy for ${startupIdea}`);
 
-			const res = await fetch('/pricing', {
+			const res = await fetch('http://127.0.0.1:5000/pricing', {
 				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
 				body: JSON.stringify({ idea: startupIdea }),
 			});
 			const data = await res.json();
 			setData(data);
 		})();
 	}, [startupIdea]);
+	if (!data) return <CardLoading title="Pricing Strategy" />;
+
 	return (
 		<div className="h-full p-4">
 			<h2 className="text-xl font-bold mb-4">Pricing Strategy</h2>

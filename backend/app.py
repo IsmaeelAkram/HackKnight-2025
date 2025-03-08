@@ -3,10 +3,13 @@ import os
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
 app = Flask(__name__)
+CORS(app)
+app.config["CORS_HEADERS"] = "Content-Type"
 limiter = Limiter(
     get_remote_address,
     app=app,
@@ -25,6 +28,7 @@ imageClient = OpenAI(api_key=OPENAI_API_KEY)
 
 
 @app.route("/")
+@limiter.exempt
 def index():
     return "HackKnight go!!! sike this is the backend that nobody cares about ^-^"
 
