@@ -1,5 +1,3 @@
-![Launchpad Dashboard](https://launchpad-hackknight.vercel.app/og_image.jpg)
-
 ## Inspiration
 
 In the age of AI tools it's never been faster to get your startup up and running with a functioning website. However, despite this 90% of startups still fail, usually due to running

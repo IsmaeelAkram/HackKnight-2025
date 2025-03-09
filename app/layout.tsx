@@ -6,16 +6,6 @@ export const metadata: Metadata = {
 	description:
 		'Transform your startup idea into a fully-fledged business with our interactive dashboard. Invest safely and properly with CapitalOne bank synchronization.',
 	themeColor: '#ffffff',
-	openGraph: {
-		images: [
-			{
-				url: 'https://launchpad-hackknight.vercel.app/og_image.jpg',
-				width: 800,
-				height: 600,
-				alt: 'Launchpad Dashboard',
-			},
-		],
-	},
 };
 
 export default function RootLayout({
