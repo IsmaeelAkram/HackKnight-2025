@@ -196,7 +196,7 @@ export function BudgetingTab({ startupIdea }: BudgetingTabProps) {
 									</div>
 								</div>
 							</CardContent>
-							<CardFooter className="flex flex-col items-start">
+							{/* <CardFooter className="flex flex-col items-start">
 								<p className="text-xs text-muted-foreground mb-2">
 									By connecting your account, you agree to our{' '}
 									<a href="#" className="underline">
@@ -208,7 +208,7 @@ export function BudgetingTab({ startupIdea }: BudgetingTabProps) {
 									</a>
 									.
 								</p>
-							</CardFooter>
+							</CardFooter> */}
 						</Card>
 					) : (
 						<Card>
@@ -259,7 +259,7 @@ export function BudgetingTab({ startupIdea }: BudgetingTabProps) {
 									</AlertDescription>
 								</Alert>
 							</CardContent>
-							<CardFooter>
+							{/* <CardFooter>
 								<Button
 									variant="outline"
 									className="w-full"
@@ -269,7 +269,7 @@ export function BudgetingTab({ startupIdea }: BudgetingTabProps) {
 									View Budget Overview
 									<ArrowRight className="ml-2 h-4 w-4" />
 								</Button>
-							</CardFooter>
+							</CardFooter> */}
 						</Card>
 					)}
 				</TabsContent>
@@ -342,7 +342,7 @@ export function BudgetingTab({ startupIdea }: BudgetingTabProps) {
 										</SelectContent>
 									</Select>
 								</div>
-								<CardDescription>How your funds are currently being spent</CardDescription>
+								{/* <CardDescription>How your funds are currently being spent</CardDescription> */}
 							</CardHeader>
 							<CardContent>
 								<div className="h-[200px] flex items-center justify-center">
@@ -462,7 +462,7 @@ export function BudgetingTab({ startupIdea }: BudgetingTabProps) {
 							</CardFooter>
 						</Card>
 					</div>
-
+					{/* 
 					<Card>
 						<CardHeader>
 							<CardTitle className="text-base">Monthly Cash Flow</CardTitle>
@@ -473,7 +473,7 @@ export function BudgetingTab({ startupIdea }: BudgetingTabProps) {
 								<LineChart className="h-full w-full text-muted-foreground" />
 							</div>
 						</CardContent>
-					</Card>
+					</Card> */}
 				</TabsContent>
 
 				<TabsContent value="allocations">

@@ -170,13 +170,199 @@ export function PricingTab({ startupIdea, demo }: PricingTabProps) {
 		<div className="h-full p-4">
 			<h2 className="text-xl font-bold mb-4">Pricing Strategy</h2>
 
-			<Tabs defaultValue="models" className="w-full">
+			<Tabs defaultValue="calculator" className="w-full">
 				<TabsList className="grid w-full grid-cols-4">
+					<TabsTrigger value="calculator">Profit Calculator</TabsTrigger>
 					<TabsTrigger value="tiers">Pricing Tiers</TabsTrigger>
 					<TabsTrigger value="competitors">Competitor Analysis</TabsTrigger>
-					<TabsTrigger value="calculator">Profit Calculator</TabsTrigger>
 					<TabsTrigger value="models">Pricing Models</TabsTrigger>
 				</TabsList>
+
+				<TabsContent value="calculator" className="space-y-4">
+					<TooltipProvider>
+						<Card>
+							<CardHeader>
+								<CardTitle className="text-base">Profit Margin Calculator</CardTitle>
+								<CardDescription>
+									Estimate your profit margins based on pricing and costs
+								</CardDescription>
+							</CardHeader>
+							<CardContent>
+								<div className="space-y-6">
+									<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+										<div className="space-y-2">
+											<div className="flex items-center justify-between">
+												<label className="text-sm font-medium">Monthly Revenue</label>
+												<Tooltip>
+													<TooltipTrigger>
+														<HelpCircle className="h-4 w-4 text-muted-foreground" />
+													</TooltipTrigger>
+													<TooltipContent>
+														<p className="w-80 text-xs">
+															Estimated monthly revenue based on your pricing tiers and projected
+															customer distribution.
+														</p>
+													</TooltipContent>
+												</Tooltip>
+											</div>
+											<div className="text-2xl font-bold">
+												${data?.financial_projection.monthly_revenue}
+											</div>
+											<div className="text-xs text-muted-foreground">
+												Based on 150 Basic, 75 Pro, and 25 Enterprise customers
+											</div>
+										</div>
+
+										<div className="space-y-2">
+											<div className="flex items-center justify-between">
+												<label className="text-sm font-medium">Monthly Costs</label>
+												<Tooltip>
+													<TooltipTrigger>
+														<HelpCircle className="h-4 w-4 text-muted-foreground" />
+													</TooltipTrigger>
+													<TooltipContent>
+														<p className="w-80 text-xs">
+															Estimated monthly costs including hosting, support, development, and
+															marketing expenses.
+														</p>
+													</TooltipContent>
+												</Tooltip>
+											</div>
+											<div className="text-2xl font-bold">
+												${data?.financial_projection.monthly_costs}
+											</div>
+											<div className="text-xs text-muted-foreground">
+												{/* Infrastructure: $2,100, Support: $1,500, Development: $2,000, Marketing:
+												$700 */}
+												{data?.financial_projection.cost_allocation &&
+													Object.entries(data.financial_projection.cost_allocation).map(
+														([key, value], index) => (
+															<div key={index}>
+																{key}: ${value}
+															</div>
+														)
+													)}
+											</div>
+										</div>
+
+										<div className="space-y-2">
+											<div className="flex items-center justify-between">
+												<label className="text-sm font-medium">Monthly Profit</label>
+												<Tooltip>
+													<TooltipTrigger>
+														<HelpCircle className="h-4 w-4 text-muted-foreground" />
+													</TooltipTrigger>
+													<TooltipContent>
+														<p className="w-80 text-xs">
+															Estimated monthly profit (revenue minus costs) and profit margin
+															percentage.
+														</p>
+													</TooltipContent>
+												</Tooltip>
+											</div>
+											<div className="text-2xl font-bold text-green-600 dark:text-green-400">
+												${data?.financial_projection.monthly_profit}
+											</div>
+											<div className="text-xs text-muted-foreground">
+												{data?.financial_projection.profit_margin}% profit margin
+											</div>
+										</div>
+									</div>
+
+									<div>
+										<h3 className="font-medium mb-2">Profit Breakdown by Tier</h3>
+										<div className="space-y-3">
+											<div>
+												<div className="flex items-center justify-between mb-1">
+													<span className="text-sm">Low Tier</span>
+													<span className="text-sm">
+														{data?.financial_projection.revenue_distribution.Low_Tier}%
+													</span>
+												</div>
+												<div className="w-full bg-muted rounded-full h-2.5">
+													<div
+														className="bg-blue-500 h-2.5 rounded-full"
+														style={{ width: '24%' }}
+													></div>
+												</div>
+											</div>
+											<div>
+												<div className="flex items-center justify-between mb-1">
+													<span className="text-sm">Mid Tier</span>
+													<span className="text-sm">
+														{data?.financial_projection.revenue_distribution.Mid_Tier}%
+													</span>
+												</div>
+												<div className="w-full bg-muted rounded-full h-2.5">
+													<div
+														className="bg-green-500 h-2.5 rounded-full"
+														style={{ width: '40%' }}
+													></div>
+												</div>
+											</div>
+											<div>
+												<div className="flex items-center justify-between mb-1">
+													<span className="text-sm">High Tier</span>
+													<span className="text-sm">
+														{data?.financial_projection.revenue_distribution.High_Tier}%
+													</span>
+												</div>
+												<div className="w-full bg-muted rounded-full h-2.5">
+													<div
+														className="bg-purple-500 h-2.5 rounded-full"
+														style={{ width: '36%' }}
+													></div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div>
+										<h3 className="font-medium mb-2">Optimization Opportunities</h3>
+										<ul className="space-y-2">
+											{data?.optimization_opportunities.map((opportunity, index) => (
+												<li key={index} className="flex items-start gap-2">
+													<Check className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
+													<p className="text-sm">{opportunity}</p>
+												</li>
+											))}
+											{/* <li className="flex items-start gap-2">
+                        <Check className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
+                        <p className="text-sm">
+                          Increase marketing efforts for Mid_Tier subscription to boost overall
+                          revenue
+                        </p>
+											{/* <li className="flex items-start gap-2">
+												<Check className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
+												<p className="text-sm">
+													Focus marketing efforts on Professional tier for highest ROI
+												</p>
+											</li>
+											<li className="flex items-start gap-2">
+												<Check className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
+												<p className="text-sm">
+													Consider a 10% price increase on Enterprise tier to improve margins
+												</p>
+											</li>
+											<li className="flex items-start gap-2">
+												<Check className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
+												<p className="text-sm">
+													Implement annual billing discounts to improve cash flow
+												</p>
+											</li>
+											<li className="flex items-start gap-2">
+												<Check className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
+												<p className="text-sm">
+													Explore infrastructure cost optimizations to increase overall margins
+												</p>
+											</li> */}
+										</ul>
+									</div>
+								</div>
+							</CardContent>
+						</Card>
+					</TooltipProvider>
+				</TabsContent>
 
 				<TabsContent value="models" className="space-y-4">
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -690,192 +876,6 @@ export function PricingTab({ startupIdea, demo }: PricingTabProps) {
 							</div>
 						</CardContent>
 					</Card>
-				</TabsContent>
-
-				<TabsContent value="calculator" className="space-y-4">
-					<TooltipProvider>
-						<Card>
-							<CardHeader>
-								<CardTitle className="text-base">Profit Margin Calculator</CardTitle>
-								<CardDescription>
-									Estimate your profit margins based on pricing and costs
-								</CardDescription>
-							</CardHeader>
-							<CardContent>
-								<div className="space-y-6">
-									<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-										<div className="space-y-2">
-											<div className="flex items-center justify-between">
-												<label className="text-sm font-medium">Monthly Revenue</label>
-												<Tooltip>
-													<TooltipTrigger>
-														<HelpCircle className="h-4 w-4 text-muted-foreground" />
-													</TooltipTrigger>
-													<TooltipContent>
-														<p className="w-80 text-xs">
-															Estimated monthly revenue based on your pricing tiers and projected
-															customer distribution.
-														</p>
-													</TooltipContent>
-												</Tooltip>
-											</div>
-											<div className="text-2xl font-bold">
-												${data?.financial_projection.monthly_revenue}
-											</div>
-											<div className="text-xs text-muted-foreground">
-												Based on 150 Basic, 75 Pro, and 25 Enterprise customers
-											</div>
-										</div>
-
-										<div className="space-y-2">
-											<div className="flex items-center justify-between">
-												<label className="text-sm font-medium">Monthly Costs</label>
-												<Tooltip>
-													<TooltipTrigger>
-														<HelpCircle className="h-4 w-4 text-muted-foreground" />
-													</TooltipTrigger>
-													<TooltipContent>
-														<p className="w-80 text-xs">
-															Estimated monthly costs including hosting, support, development, and
-															marketing expenses.
-														</p>
-													</TooltipContent>
-												</Tooltip>
-											</div>
-											<div className="text-2xl font-bold">
-												${data?.financial_projection.monthly_costs}
-											</div>
-											<div className="text-xs text-muted-foreground">
-												{/* Infrastructure: $2,100, Support: $1,500, Development: $2,000, Marketing:
-												$700 */}
-												{data?.financial_projection.cost_allocation &&
-													Object.entries(data.financial_projection.cost_allocation).map(
-														([key, value], index) => (
-															<div key={index}>
-																{key}: ${value}
-															</div>
-														)
-													)}
-											</div>
-										</div>
-
-										<div className="space-y-2">
-											<div className="flex items-center justify-between">
-												<label className="text-sm font-medium">Monthly Profit</label>
-												<Tooltip>
-													<TooltipTrigger>
-														<HelpCircle className="h-4 w-4 text-muted-foreground" />
-													</TooltipTrigger>
-													<TooltipContent>
-														<p className="w-80 text-xs">
-															Estimated monthly profit (revenue minus costs) and profit margin
-															percentage.
-														</p>
-													</TooltipContent>
-												</Tooltip>
-											</div>
-											<div className="text-2xl font-bold text-green-600 dark:text-green-400">
-												${data?.financial_projection.monthly_profit}
-											</div>
-											<div className="text-xs text-muted-foreground">
-												{data?.financial_projection.profit_margin}% profit margin
-											</div>
-										</div>
-									</div>
-
-									<div>
-										<h3 className="font-medium mb-2">Profit Breakdown by Tier</h3>
-										<div className="space-y-3">
-											<div>
-												<div className="flex items-center justify-between mb-1">
-													<span className="text-sm">Low Tier</span>
-													<span className="text-sm">
-														{data?.financial_projection.revenue_distribution.Low_Tier}%
-													</span>
-												</div>
-												<div className="w-full bg-muted rounded-full h-2.5">
-													<div
-														className="bg-blue-500 h-2.5 rounded-full"
-														style={{ width: '24%' }}
-													></div>
-												</div>
-											</div>
-											<div>
-												<div className="flex items-center justify-between mb-1">
-													<span className="text-sm">Mid Tier</span>
-													<span className="text-sm">
-														{data?.financial_projection.revenue_distribution.Mid_Tier}%
-													</span>
-												</div>
-												<div className="w-full bg-muted rounded-full h-2.5">
-													<div
-														className="bg-green-500 h-2.5 rounded-full"
-														style={{ width: '40%' }}
-													></div>
-												</div>
-											</div>
-											<div>
-												<div className="flex items-center justify-between mb-1">
-													<span className="text-sm">High Tier</span>
-													<span className="text-sm">
-														{data?.financial_projection.revenue_distribution.High_Tier}%
-													</span>
-												</div>
-												<div className="w-full bg-muted rounded-full h-2.5">
-													<div
-														className="bg-purple-500 h-2.5 rounded-full"
-														style={{ width: '36%' }}
-													></div>
-												</div>
-											</div>
-										</div>
-									</div>
-
-									<div>
-										<h3 className="font-medium mb-2">Optimization Opportunities</h3>
-										<ul className="space-y-2">
-											{data?.optimization_opportunities.map((opportunity, index) => (
-												<li key={index} className="flex items-start gap-2">
-													<Check className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
-													<p className="text-sm">{opportunity}</p>
-												</li>
-											))}
-											{/* <li className="flex items-start gap-2">
-                        <Check className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
-                        <p className="text-sm">
-                          Increase marketing efforts for Mid_Tier subscription to boost overall
-                          revenue
-                        </p>
-											{/* <li className="flex items-start gap-2">
-												<Check className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
-												<p className="text-sm">
-													Focus marketing efforts on Professional tier for highest ROI
-												</p>
-											</li>
-											<li className="flex items-start gap-2">
-												<Check className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
-												<p className="text-sm">
-													Consider a 10% price increase on Enterprise tier to improve margins
-												</p>
-											</li>
-											<li className="flex items-start gap-2">
-												<Check className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
-												<p className="text-sm">
-													Implement annual billing discounts to improve cash flow
-												</p>
-											</li>
-											<li className="flex items-start gap-2">
-												<Check className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
-												<p className="text-sm">
-													Explore infrastructure cost optimizations to increase overall margins
-												</p>
-											</li> */}
-										</ul>
-									</div>
-								</div>
-							</CardContent>
-						</Card>
-					</TooltipProvider>
 				</TabsContent>
 			</Tabs>
 		</div>

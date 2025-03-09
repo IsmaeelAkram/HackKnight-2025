@@ -137,7 +137,7 @@ export function BrandingTab({ name, startupIdea, demo }: BrandingTabProps) {
 									<div className="w-32 h-32 relative">
 										{imageData ? (
 											<Image
-												src={imageData.logo}
+												src={demo ? '/demo/logo.png' : imageData.logo}
 												alt={`${name} logo`}
 												width={128}
 												height={128}
@@ -422,7 +422,7 @@ export function BrandingTab({ name, startupIdea, demo }: BrandingTabProps) {
 									<div className="bg-primary/10 rounded-md p-4 mb-4">
 										{imageData ? (
 											<Image
-												src={imageData.websiteBanner}
+												src={demo ? '/demo/websiteBanner.png' : imageData.websiteBanner}
 												alt="Banner"
 												width={200}
 												height={100}
@@ -444,7 +444,7 @@ export function BrandingTab({ name, startupIdea, demo }: BrandingTabProps) {
 									<div className="bg-primary/10 rounded-md p-4 mb-4">
 										{imageData ? (
 											<Image
-												src={imageData?.socialMediaAvatar}
+												src={demo ? '/demo/socialMediaAvatar.png' : imageData?.socialMediaAvatar}
 												alt="Social Media Avatar"
 												width={100}
 												height={100}
@@ -466,7 +466,7 @@ export function BrandingTab({ name, startupIdea, demo }: BrandingTabProps) {
 								<div className="bg-primary/10 rounded-md p-4 mb-4">
 									{imageData ? (
 										<Image
-											src={imageData?.emailHeader}
+											src={demo ? '/demo/emailHeader.png' : imageData?.emailHeader}
 											alt="Email Header"
 											width={200 * 1.5}
 											height={100 * 1.5}
