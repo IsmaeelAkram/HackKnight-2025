@@ -18,5 +18,5 @@ Hackathon API to produce mock data for our budgeting analytics.
 On the backend we ran into the issue of returning the images in JSON format. We tried to convert into base64 format and decode it with UTF-8, but the response from OpenAI had a url object we could
 return instead, showing that the simpler solution is often times the correct solution.
 
-## What's next for Sentinel - Safeguarding your data on the web
+## What's next
 We'd like to expand bank integration to a variety of banks outside of just Capital One.
