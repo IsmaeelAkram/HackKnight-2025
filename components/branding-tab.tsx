@@ -90,7 +90,7 @@ export function BrandingTab({ name, startupIdea, demo }: BrandingTabProps) {
 			if (!startupIdea || demo) return;
 			console.log(`Brand Generation for ${startupIdea}`);
 
-			let res = await fetch('http://127.0.0.1:5000//branding/images', {
+			let res = await fetch('http://127.0.0.1:5000/branding/images', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ export function BrandingTab({ name, startupIdea, demo }: BrandingTabProps) {
 			let data = await res.json();
 			setImageData(data);
 
-			res = await fetch('http://127.0.0.1:5000//branding/text', {
+			res = await fetch('http://127.0.0.1:5000/branding/text', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
