@@ -17,6 +17,7 @@ import CardLoading from './cardLoading';
 
 interface PricingTabProps {
 	startupIdea: string;
+	demo: boolean;
 }
 
 interface PricingStrategyResponse {
@@ -145,11 +146,11 @@ const sampleData: PricingStrategyResponse = {
 	selected_pricing_model: 'Subscription-Based',
 };
 
-export function PricingTab({ startupIdea }: PricingTabProps) {
-	const [data, setData] = useState<PricingStrategyResponse | null>(null);
+export function PricingTab({ startupIdea, demo }: PricingTabProps) {
+	const [data, setData] = useState<PricingStrategyResponse | null>(demo ? sampleData : null);
 	useEffect(() => {
 		(async () => {
-			if (!startupIdea) return;
+			if (!startupIdea || demo) return;
 			console.log(`Pricing Strategy for ${startupIdea}`);
 
 			const res = await fetch('http://127.0.0.1:5000/pricing', {

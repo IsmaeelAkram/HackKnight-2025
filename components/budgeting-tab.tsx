@@ -143,9 +143,9 @@ export function BudgetingTab({ startupIdea }: BudgetingTabProps) {
 							<CardContent className="space-y-6">
 								<div className="flex flex-col items-center justify-center p-6 border rounded-lg bg-muted/30">
 									<Image
-										src="/placeholder.svg?height=60&width=120"
+										src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Capital_One_logo.svg/1024px-Capital_One_logo.svg.png"
 										alt="Capital One Logo"
-										width={120}
+										width={240}
 										height={60}
 										className="mb-4"
 									/>

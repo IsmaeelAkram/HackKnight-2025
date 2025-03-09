@@ -8,6 +8,7 @@ import CardLoading from './cardLoading';
 
 interface OutreachTabProps {
 	startupIdea: string;
+	demo: boolean;
 }
 
 interface OutreachGenResponse {
@@ -58,11 +59,11 @@ const sampleData: OutreachGenResponse = {
 	},
 };
 
-export function OutreachTab({ startupIdea }: OutreachTabProps) {
-	const [data, setData] = useState<OutreachGenResponse | null>(null);
+export function OutreachTab({ startupIdea, demo }: OutreachTabProps) {
+	const [data, setData] = useState<OutreachGenResponse | null>(demo ? sampleData : null);
 	useEffect(() => {
 		(async () => {
-			if (!startupIdea) return;
+			if (!startupIdea || demo) return;
 			console.log(`Outreach Generation for ${startupIdea}`);
 
 			const res = await fetch('http://127.0.0.1:5000/outreach', {

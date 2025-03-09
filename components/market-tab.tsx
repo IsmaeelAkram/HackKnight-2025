@@ -9,6 +9,7 @@ import CardLoading from './cardLoading';
 
 interface MarketTabProps {
 	startupIdea: string;
+	demo: boolean;
 }
 
 interface MarketAnalysisResponse {
@@ -159,11 +160,11 @@ const sampleData: MarketAnalysisResponse = {
 	},
 };
 
-export function MarketTab({ startupIdea }: MarketTabProps) {
-	const [data, setData] = useState<MarketAnalysisResponse | null>(null);
+export function MarketTab({ startupIdea, demo }: MarketTabProps) {
+	const [data, setData] = useState<MarketAnalysisResponse | null>(demo ? sampleData : null);
 	useEffect(() => {
 		(async () => {
-			if (!startupIdea) return;
+			if (!startupIdea || demo) return;
 			console.log(`Market Analysis for ${startupIdea}`);
 
 			const res = await fetch('http://127.0.0.1:5000/market', {
@@ -256,18 +257,7 @@ export function MarketTab({ startupIdea }: MarketTabProps) {
 								<ul className="space-y-2">
 									{data?.CustomerSegments.map((segment) => (
 										<li key={segment.Name} className="flex items-center gap-2">
-											<span
-												className={`h-2 w-2 rounded-full ${
-													[
-														'bg-blue-500',
-														'bg-green-500',
-														'bg-yellow-500',
-														'bg-red-500',
-														'bg-purple-500',
-														'bg-indigo-500',
-													][Math.floor(Math.random() * 6)]
-												}`}
-											></span>
+											<span className={`h-2 w-2 rounded-full bg-blue-500`}></span>
 											<span>
 												{segment.Name} ({segment.Percent}%)
 											</span>
@@ -298,16 +288,8 @@ export function MarketTab({ startupIdea }: MarketTabProps) {
 									{data?.GeographicDistribution.map((region) => (
 										<li key={region.region} className="flex items-center gap-2">
 											<span
-												className={`h-2 w-2 rounded-full ${
-													[
-														'bg-blue-500',
-														'bg-green-500',
-														'bg-yellow-500',
-														'bg-red-500',
-														'bg-purple-500',
-														'bg-indigo-500',
-													][Math.floor(Math.random() * 6)]
-												}`}
+												className={`h-2 w-2 rounded-full bg-blue-500
+												`}
 											></span>
 											<span>
 												{region.region} ({region.Percent}%)
@@ -345,18 +327,7 @@ export function MarketTab({ startupIdea }: MarketTabProps) {
 							<ul className="space-y-2">
 								{data?.MarketTrends.map((trend) => (
 									<li key={trend} className="flex items-center gap-2">
-										<span
-											className={`h-2 w-2 rounded-full ${
-												[
-													'bg-blue-500',
-													'bg-green-500',
-													'bg-yellow-500',
-													'bg-red-500',
-													'bg-purple-500',
-													'bg-indigo-500',
-												][Math.floor(Math.random() * 6)]
-											}`}
-										></span>
+										<span className={`h-2 w-2 rounded-full bg-blue-500`}></span>
 										<span>{trend}</span>
 									</li>
 								))}

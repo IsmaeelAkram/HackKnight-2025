@@ -20,38 +20,39 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 export default function Dashboard() {
 	const searchParams = useSearchParams();
-	const startupIdea = searchParams.get('idea') || 'My Startup';
-	const description = searchParams.get('description') || 'A new business venture';
+	const name = searchParams.get('name') || 'My Startup';
+	const startupIdea = searchParams.get('idea') || 'A new business venture';
+	const demo = searchParams.get('demo') != null;
 
 	// Default layouts for different screen sizes
 	const [layouts, setLayouts] = useState({
 		lg: [
-			{ i: 'budgeting', x: 0, y: 0, w: 12, h: 10 },
-			{ i: 'market', x: 0, y: 10, w: 6, h: 8 },
-			{ i: 'branding', x: 6, y: 10, w: 6, h: 8 },
-			{ i: 'outreach', x: 0, y: 18, w: 6, h: 8 },
-			{ i: 'pricing', x: 6, y: 18, w: 6, h: 8 },
+			{ i: 'market', x: 0, y: 0, w: 6, h: 8 },
+			{ i: 'branding', x: 6, y: 0, w: 6, h: 8 },
+			{ i: 'outreach', x: 0, y: 8, w: 6, h: 8 },
+			{ i: 'pricing', x: 6, y: 8, w: 6, h: 8 },
+			{ i: 'budgeting', x: 0, y: 16, w: 12, h: 10 },
 		],
 		md: [
-			{ i: 'budgeting', x: 0, y: 0, w: 12, h: 10 },
-			{ i: 'market', x: 0, y: 10, w: 6, h: 8 },
-			{ i: 'branding', x: 6, y: 10, w: 6, h: 8 },
-			{ i: 'outreach', x: 0, y: 18, w: 6, h: 8 },
-			{ i: 'pricing', x: 6, y: 18, w: 6, h: 8 },
+			{ i: 'market', x: 0, y: 0, w: 6, h: 8 },
+			{ i: 'branding', x: 6, y: 0, w: 6, h: 8 },
+			{ i: 'outreach', x: 0, y: 8, w: 6, h: 8 },
+			{ i: 'pricing', x: 6, y: 8, w: 6, h: 8 },
+			{ i: 'budgeting', x: 0, y: 16, w: 12, h: 10 },
 		],
 		sm: [
-			{ i: 'budgeting', x: 0, y: 0, w: 12, h: 10 },
-			{ i: 'market', x: 0, y: 10, w: 12, h: 8 },
-			{ i: 'branding', x: 0, y: 18, w: 12, h: 8 },
-			{ i: 'outreach', x: 0, y: 26, w: 12, h: 8 },
-			{ i: 'pricing', x: 0, y: 34, w: 12, h: 8 },
+			{ i: 'market', x: 0, y: 0, w: 12, h: 8 },
+			{ i: 'branding', x: 0, y: 8, w: 12, h: 8 },
+			{ i: 'outreach', x: 0, y: 16, w: 12, h: 8 },
+			{ i: 'pricing', x: 0, y: 24, w: 12, h: 8 },
+			{ i: 'budgeting', x: 0, y: 32, w: 12, h: 10 },
 		],
 		xs: [
-			{ i: 'budgeting', x: 0, y: 0, w: 12, h: 10 },
-			{ i: 'market', x: 0, y: 10, w: 12, h: 8 },
-			{ i: 'branding', x: 0, y: 18, w: 12, h: 8 },
-			{ i: 'outreach', x: 0, y: 26, w: 12, h: 8 },
-			{ i: 'pricing', x: 0, y: 34, w: 12, h: 8 },
+			{ i: 'market', x: 0, y: 0, w: 12, h: 8 },
+			{ i: 'branding', x: 0, y: 8, w: 12, h: 8 },
+			{ i: 'outreach', x: 0, y: 16, w: 12, h: 8 },
+			{ i: 'pricing', x: 0, y: 24, w: 12, h: 8 },
+			{ i: 'budgeting', x: 0, y: 32, w: 12, h: 10 },
 		],
 	});
 
@@ -70,10 +71,10 @@ export default function Dashboard() {
 							</Button>
 						</Link>
 						<Rocket className="h-6 w-6 text-primary" />
-						<h1 className="text-xl font-bold">{startupIdea}</h1>
+						<h1 className="text-xl font-bold">{name}</h1>
 					</div>
 					<div className="text-sm text-muted-foreground hidden md:block max-w-md truncate">
-						{description}
+						{startupIdea}
 					</div>
 					<Button size="sm">Save Dashboard</Button>
 				</div>
@@ -95,16 +96,16 @@ export default function Dashboard() {
 						<BudgetingTab startupIdea={startupIdea} />
 					</div>
 					<div key="market" className="bg-card rounded-lg shadow-sm border overflow-auto">
-						<MarketTab startupIdea={startupIdea} />
+						<MarketTab startupIdea={startupIdea} demo={demo} />
 					</div>
 					<div key="branding" className="bg-card rounded-lg shadow-sm border overflow-auto">
-						<BrandingTab startupIdea={startupIdea} />
+						<BrandingTab startupIdea={startupIdea} demo={demo} name={name} />
 					</div>
 					<div key="outreach" className="bg-card rounded-lg shadow-sm border overflow-auto">
-						<OutreachTab startupIdea={startupIdea} />
+						<OutreachTab startupIdea={startupIdea} demo={demo} />
 					</div>
 					<div key="pricing" className="bg-card rounded-lg shadow-sm border overflow-auto">
-						<PricingTab startupIdea={startupIdea} />
+						<PricingTab startupIdea={startupIdea} demo={demo} />
 					</div>
 				</ResponsiveGridLayout>
 			</main>

@@ -18,7 +18,9 @@ import CardLoading from './cardLoading';
 import { MoonLoader } from 'react-spinners';
 
 interface BrandingTabProps {
+	name: string;
 	startupIdea: string;
+	demo: boolean;
 }
 
 interface BrandingImagesResponse {
@@ -76,12 +78,16 @@ const textSampleData = {
 	},
 };
 
-export function BrandingTab({ startupIdea }: BrandingTabProps) {
-	const [imageData, setImageData] = useState<BrandingImagesResponse | null>(null);
-	const [textData, setTextData] = useState<BrandingTextResponse | null>(null);
+export function BrandingTab({ name, startupIdea, demo }: BrandingTabProps) {
+	const [imageData, setImageData] = useState<BrandingImagesResponse | null>(
+		demo ? imagesSampleData : null
+	);
+	const [textData, setTextData] = useState<BrandingTextResponse | null>(
+		demo ? textSampleData : null
+	);
 	useEffect(() => {
 		(async () => {
-			if (!startupIdea) return;
+			if (!startupIdea || demo) return;
 			console.log(`Brand Generation for ${startupIdea}`);
 
 			let res = await fetch('http://127.0.0.1:5000/branding/images', {
@@ -107,17 +113,6 @@ export function BrandingTab({ startupIdea }: BrandingTabProps) {
 	}, [startupIdea]);
 	if (!textData) return <CardLoading title="Branding" />;
 
-	// Generate a simple company name based on the startup idea
-	const generateCompanyName = (idea: string) => {
-		const words = idea.split(' ');
-		if (words.length >= 2) {
-			return `${words[0]}${words[1].charAt(0).toUpperCase() + words[1].slice(1)}`;
-		}
-		return `${words[0]}Hub`;
-	};
-
-	const companyName = generateCompanyName(startupIdea);
-
 	return (
 		<div className="h-full p-4">
 			<h2 className="text-xl font-bold mb-4">Branding</h2>
@@ -135,7 +130,7 @@ export function BrandingTab({ startupIdea }: BrandingTabProps) {
 						<Card>
 							<CardHeader>
 								<CardTitle className="text-base">Logo</CardTitle>
-								<CardDescription>AI-generated logo for {companyName}</CardDescription>
+								<CardDescription>AI-generated logo for {name}</CardDescription>
 							</CardHeader>
 							<CardContent className="flex flex-col items-center justify-center">
 								<div className="bg-primary/10 rounded-full p-8 mb-4">
@@ -143,7 +138,7 @@ export function BrandingTab({ startupIdea }: BrandingTabProps) {
 										{imageData ? (
 											<Image
 												src={imageData.logo}
-												alt={`${companyName} logo`}
+												alt={`${name} logo`}
 												width={128}
 												height={128}
 												className="object-contain"
@@ -154,7 +149,7 @@ export function BrandingTab({ startupIdea }: BrandingTabProps) {
 									</div>
 								</div>
 								<div className="text-center">
-									<h3 className="text-xl font-bold">{companyName}</h3>
+									<h3 className="text-xl font-bold">{name}</h3>
 									<p className="text-sm text-muted-foreground">Your brand identity</p>
 								</div>
 							</CardContent>
