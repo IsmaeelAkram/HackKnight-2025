@@ -80,7 +80,7 @@ const sampleData: PricingStrategyResponse = {
 		},
 		{
 			key_differentiator: 'Locally sourced honey',
-			name: 'Local Honey Cafe',
+			name: 'Local Cafe',
 			price_points: ['5.50', '6.50', '7.50'],
 			pricing_model: 'One-Time Price',
 		},

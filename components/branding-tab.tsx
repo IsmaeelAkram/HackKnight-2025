@@ -133,15 +133,15 @@ export function BrandingTab({ name, startupIdea, demo }: BrandingTabProps) {
 								<CardDescription>AI-generated logo for {name}</CardDescription>
 							</CardHeader>
 							<CardContent className="flex flex-col items-center justify-center">
-								<div className="bg-primary/10 rounded-full p-8 mb-4">
+								<div className="bg-primary/10 rounded-full p-4 mb-4">
 									<div className="w-32 h-32 relative">
 										{imageData ? (
 											<Image
-												src={demo ? '/demo/logo.png' : imageData.logo}
+												src={demo ? '/demo/logo.jpg' : imageData.logo}
 												alt={`${name} logo`}
 												width={128}
 												height={128}
-												className="object-contain"
+												className="object-contain rounded-full"
 											/>
 										) : (
 											<MoonLoader size={16} />

@@ -44,13 +44,13 @@ export default function Home() {
 		<main className="flex min-h-screen flex-col items-center justify-center p-4 bg-gradient-to-b from-background to-muted">
 			<Card className="w-full max-w-md">
 				<CardHeader>
-					<div className="flex items-center gap-2 mb-2">
-						<Rocket className="h-6 w-6 text-primary" />
-						<CardTitle>Startup Launchpad</CardTitle>
+					<div className="flex w-full justify-center items-center gap-2 mb-2">
+						<Rocket className="h-8 w-8" />
+						<CardTitle>Launchpad</CardTitle>
 					</div>
-					<CardDescription>
+					<CardDescription className="text-center">
 						Transform your startup idea into a fully-fledged business with our interactive
-						dashboard.
+						dashboard. Invest safely and properly with CapitalOne bank synchronization.
 					</CardDescription>
 				</CardHeader>
 				<form onSubmit={handleSubmit}>

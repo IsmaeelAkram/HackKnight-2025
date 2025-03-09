@@ -10,12 +10,12 @@ from flask_limiter.util import get_remote_address
 app = Flask(__name__)
 CORS(app)
 app.config["CORS_HEADERS"] = "Content-Type"
-limiter = Limiter(
-    get_remote_address,
-    app=app,
-    default_limits=["1 per minute"],
-    storage_uri="memory://",
-)
+# limiter = Limiter(
+#     get_remote_address,
+#     app=app,
+#     default_limits=["2 per minute"],
+#     storage_uri="memory://",
+# )
 
 
 from openai import OpenAI
@@ -27,8 +27,8 @@ client = OpenAI(api_key=PERPLEXITY_API_KEY, base_url="https://api.perplexity.ai"
 imageClient = OpenAI(api_key=OPENAI_API_KEY)
 
 
+# @limiter.exempt
 @app.route("/")
-@limiter.exempt
 def index():
     return "HackKnight go!!! sike this is the backend that nobody cares about ^-^"
 
@@ -368,6 +368,7 @@ def pricing_strategy():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
 @app.route("/branding/images", methods=["POST"])
 def branding_images():
     data = request.json
@@ -378,8 +379,7 @@ def branding_images():
 
     logoPrompt = f"""
         You are a professional graphic designer. Design a professional logo for a new startup who's concept is
-        {idea}. Make the design sleek and minimalistic, don't add non-english text, and only in a clear/readable fontand make the colors bold.
-        You are NOT returning multiple examples for someone to choose from you are only returning one image to be used as a logo.
+        {idea}. Make the design sleek and minimalistic, don't add non-english text, and only in a clear/readable font and make the colors bold.
     """
 
     websiteBannerPrompt = f"""
@@ -508,6 +508,7 @@ def branding_text():
         return jsonify(json_out), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 @app.route("/budgeting")
 def budgeting():

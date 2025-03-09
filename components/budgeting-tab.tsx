@@ -228,12 +228,7 @@ export function BudgetingTab({ startupIdea }: BudgetingTabProps) {
 							</CardHeader>
 							<CardContent className="space-y-4">
 								<div className="flex items-center gap-4 p-4 border rounded-lg">
-									<Image
-										src="/placeholder.svg?height=40&width=80"
-										alt="Capital One Logo"
-										width={80}
-										height={40}
-									/>
+									<Image src="/debit.png" alt="Capital One Debit Card" width={80} height={40} />
 									<div>
 										<h3 className="font-medium">Capital One Business Checking</h3>
 										<p className="text-sm text-muted-foreground">Account ending in •••• 4567</p>
@@ -245,7 +240,7 @@ export function BudgetingTab({ startupIdea }: BudgetingTabProps) {
 									</div>
 								</div>
 
-								<Alert className={analysisComplete ? 'bg-green-100' : 'bg-yellow-100'}>
+								<Alert>
 									<LineChart className="h-4 w-4" />
 									<AlertTitle>
 										{analysisComplete ? 'Analysis Complete' : 'Analysis in progress'}

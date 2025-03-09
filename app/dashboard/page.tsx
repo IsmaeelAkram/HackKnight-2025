@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import { ArrowLeft, Rocket } from 'lucide-react';
 import Link from 'next/link';
@@ -12,6 +12,7 @@ import { BrandingTab } from '@/components/branding-tab';
 import { OutreachTab } from '@/components/outreach-tab';
 import { PricingTab } from '@/components/pricing-tab';
 import { BudgetingTab } from '@/components/budgeting-tab';
+import { Switch } from '@/components/ui/switch';
 
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -23,6 +24,15 @@ export default function Dashboard() {
 	const name = searchParams.get('name') || 'My Startup';
 	const startupIdea = searchParams.get('idea') || 'A new business venture';
 	const demo = searchParams.get('demo') != null;
+	const [isDarkMode, setIsDarkMode] = useState(false);
+
+	useEffect(() => {
+		if (isDarkMode) {
+			document.body.classList.add('dark');
+		} else {
+			document.body.classList.remove('dark');
+		}
+	}, [isDarkMode]);
 
 	// Default layouts for different screen sizes
 	const [layouts, setLayouts] = useState({
@@ -76,7 +86,10 @@ export default function Dashboard() {
 					<div className="text-sm text-muted-foreground hidden md:block max-w-md truncate">
 						{startupIdea}
 					</div>
-					<Button size="sm">Save Dashboard</Button>
+					<div className="flex items-center gap-2">
+						<Switch checked={isDarkMode} onCheckedChange={(checked) => setIsDarkMode(checked)} />
+						<span className="text-sm">Dark Mode</span>
+					</div>
 				</div>
 			</header>
 
