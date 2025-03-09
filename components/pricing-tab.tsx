@@ -153,7 +153,7 @@ export function PricingTab({ startupIdea, demo }: PricingTabProps) {
 			if (!startupIdea || demo) return;
 			console.log(`Pricing Strategy for ${startupIdea}`);
 
-			const res = await fetch('http://127.0.0.1:5000/pricing', {
+			const res = await fetch('https://hackknight-api-4b72e0673517.herokuapp.com//pricing', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

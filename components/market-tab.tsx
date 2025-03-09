@@ -167,7 +167,7 @@ export function MarketTab({ startupIdea, demo }: MarketTabProps) {
 			if (!startupIdea || demo) return;
 			console.log(`Market Analysis for ${startupIdea}`);
 
-			const res = await fetch('http://127.0.0.1:5000/market', {
+			const res = await fetch('https://hackknight-api-4b72e0673517.herokuapp.com//market', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

@@ -66,7 +66,7 @@ export function OutreachTab({ startupIdea, demo }: OutreachTabProps) {
 			if (!startupIdea || demo) return;
 			console.log(`Outreach Generation for ${startupIdea}`);
 
-			const res = await fetch('http://127.0.0.1:5000/outreach', {
+			const res = await fetch('https://hackknight-api-4b72e0673517.herokuapp.com//outreach', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
