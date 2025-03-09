@@ -379,6 +379,7 @@ def branding_images():
     logoPrompt = f"""
         You are a professional graphic designer. Design a professional logo for a new startup who's concept is
         {idea}. Make the design sleek and minimalistic, don't add non-english text, and only in a clear/readable fontand make the colors bold.
+        You are NOT returning multiple examples for someone to choose from you are only returning one image to be used as a logo.
     """
 
     websiteBannerPrompt = f"""
